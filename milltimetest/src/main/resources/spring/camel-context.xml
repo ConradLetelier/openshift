@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean class="org.mycompany.PrintBean" id="printBean" scope="singleton"/>
+    <!-- Define a traditional camel context here -->
+    <camelContext id="camel" streamCache="true" xmlns="http://camel.apache.org/schema/spring">
+        <streamCaching bufferSize="1638499" id="myCacheConfig"
+            spoolDirectory="/tmp/cachedir" spoolThreshold="65536"/>
+        <route autoStartup="false" id="simple-route">
+            <from id="route-timer" uri="timer:foo?period=2000"/>
+            <transform id="route-transform">
+                <method ref="myTransformer"/>
+            </transform>
+            <log id="route-log" message=">>> ${body}"/>
+        </route>
+        <route id="simple-route2">
+            <from id="_from2" uri="direct:hello"/>
+            <log id="route-log2" message="Halloo!!"/>
+        </route>
+        <route id="/milltime">
+            <from id="_from3" uri="direct:getMilltime"/>
+            <to id="_to2" uri="cxf:https://lexiconit.milltime.se/cgi/api_service.cgi?dataFormat=MESSAGE&amp;wsdlURL=src\main\resources\wsdl\MilltimeAPI.wsdl"/>
+            <log id="_log2" message="${body}"/>
+        </route>
+        <route id="_/posts" streamCache="false">
+            <from id="_from4" uri="direct:posts"/>
+            <setBody id="_setBody1">
+                <el>http://jsonplaceholder.typicode.com/posts</el>
+            </setBody>
+            <bean id="_bean1" ref="printBean"/>
+            <log id="_log3" message="${body}"/>
+        </route>
+    </camelContext>
+</beans>

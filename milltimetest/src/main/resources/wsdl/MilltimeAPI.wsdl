@@ -1,0 +1,4209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="MilltimeAPI"
+ targetNamespace="urn:API"
+ xmlns:tns="urn:API"
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:mta="urn:API"
+ xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+ xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+ xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+ <schema targetNamespace="urn:API"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:mta="urn:API"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="qualified">
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <simpleType name="regtime">
+   <restriction base="xsd:string">
+   </restriction>
+  </simpleType>
+  <simpleType name="ValueListEnum">
+   <restriction base="xsd:string">
+    <enumeration value="CompanyList"/><!-- enum const = 0 -->
+   </restriction>
+  </simpleType>
+  <simpleType name="ProjPlanStatus">
+   <restriction base="xsd:string">
+    <enumeration value="ProjPlanStatusNotStarted"/><!-- enum const = 0 -->
+    <enumeration value="ProjPlanStatusInProgress"/><!-- enum const = 1 -->
+    <enumeration value="ProjPlanStatusWaiting"/><!-- enum const = 2 -->
+    <enumeration value="ProjPlanStatusCompleted"/><!-- enum const = 3 -->
+   </restriction>
+  </simpleType>
+  <simpleType name="ProjPlanPricing">
+   <restriction base="xsd:string">
+    <enumeration value="ProjPlanPricingUnknown"/><!-- enum const = 0 -->
+    <enumeration value="ProjPlanPricingTimeAndMaterial"/><!-- enum const = 1 -->
+    <enumeration value="ProjPlanPricingRoof"/><!-- enum const = 2 -->
+    <enumeration value="ProjPlanPricingFixed"/><!-- enum const = 3 -->
+   </restriction>
+  </simpleType>
+  <simpleType name="ReportGroupEnum">
+   <restriction base="xsd:string">
+    <enumeration value="month"/><!-- enum const = 0 -->
+    <enumeration value="week"/><!-- enum const = 1 -->
+   </restriction>
+  </simpleType>
+  <complexType name="whoAmIResponse">
+   <sequence>
+     <element name="me" type="mta:UserData" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ActivityData">
+   <annotation>
+    <documentation>ActivityId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityType" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="TaskData">
+   <annotation>
+    <documentation>ProjPlanActivityId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjPlanActivityName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhaseName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityType" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VariationId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AbsenceType" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ActivityGroupData">
+   <annotation>
+    <documentation>activitygroups</documentation>
+   </annotation>
+   <sequence>
+     <element name="ActivityGroupId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityGroupName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="CustomerContactData">
+   <annotation>
+    <documentation>List of customers</documentation>
+   </annotation>
+   <sequence>
+     <element name="ContactId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustomerNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ContactName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhoneNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MobileNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustDep" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="EMail" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="CustomerData">
+   <annotation>
+    <documentation>List of customers</documentation>
+   </annotation>
+   <sequence>
+     <element name="CustomerNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustomerName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="OrgNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="contacts" type="mta:CustomerContactData" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="CustRef" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustDep" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="OurRef" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhoneNr1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhoneNr2" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FaxNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MobileNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipTermsName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipTerms" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipTypeName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipType" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillTermsName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillTerms" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CommonTermsName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CommonTerms" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CountryCode2" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CountryCode3" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillAddress1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillAddress2" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillAddress3" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillAddress4" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillAddress5" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillAddress6" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipAddress1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipAddress2" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipAddress3" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipAddress4" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipAddress5" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShipAddress6" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VatNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CurrencyCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LanguageCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CreatedDate" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+     <element name="LastChangesDate" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="InstanceData">
+   <annotation>
+    <documentation>instances to use for login</documentation>
+   </annotation>
+   <sequence>
+     <element name="InstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="InstanceName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectCustomerData">
+   <annotation>
+    <documentation>Customerdata for project</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustomerNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ContactId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Distribution" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectCustomerData2">
+   <annotation>
+    <documentation>Customerdata for project</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustomerNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ContactId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BuyerId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Distribution" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectAttributeValue">
+   <annotation>
+    <documentation>AttributeId is partial key</documentation>
+   </annotation>
+   <sequence>
+     <element name="AttributeId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttributeValue" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShowOnReport" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectData">
+   <annotation>
+    <documentation>ProjectId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SellerName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShowProjectNr" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LeaderId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ManagerId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="InvoiceNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customers" type="mta:ProjectCustomerData" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="activities" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+     <element name="users" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+     <element name="groups" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+     <element name="attributevalues" type="mta:ProjectAttributeValue" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="CustomerOrderNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShowCustomerOrderNr" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="NoReport" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="NoInvoice" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="StartDate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="EndDate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="PhaseActivity">
+   <sequence>
+     <element name="PhaseId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="ActivityId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectData2">
+   <annotation>
+    <documentation>ProjectId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SellerName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LeaderId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ManagerId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="InvoiceNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustomerOrderNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShowCustomerOrderNr" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="ProjectNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="NoReport" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="NoInvoice" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="ProjectNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ShowProjectNr" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="Disabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="StartDate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="EndDate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customers" type="mta:ProjectCustomerData2" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="PhaseActivities" type="mta:PhaseActivity" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="users" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="groups" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="attributevalues" type="mta:ProjectAttributeValue" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="PriceListName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="PhaseData">
+   <sequence>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhaseName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Disabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="AssignmentData">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AssignmentNr" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustomerNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CustDep" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CompanyNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Source" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SourceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="PaymentScheduleProjectRowData">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RowOrder" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PaymentAmount" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ArticleId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="InvDate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ReportNr" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ReportRow" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PaymentNotes" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectPlanActivityData">
+   <annotation>
+    <documentation>ProjectActivityId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjectPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectPlanActivityName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedStart" type="xsd:dateTime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedFinish" type="xsd:dateTime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MaxTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WorkTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectPlanActivityUserData">
+   <annotation>
+    <documentation>ProjectActivityId, UserId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjectPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MaxTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WorkTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillTime" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectPlanActivityUserData2">
+   <sequence>
+     <element name="UserId" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+     <element name="PlannedTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedCostHour" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Status" type="mta:ProjPlanStatus" minOccurs="1" maxOccurs="1"/>
+     <element name="PercentDone" type="xsd:float" minOccurs="1" maxOccurs="1"/>
+     <element name="EstRemainingTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="EstimatedFinish" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LastUpdated" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WorkTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillTimeHH" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ProjectPlanActivityData2">
+   <annotation>
+    <documentation>One task with planned time per user</documentation>
+   </annotation>
+   <sequence>
+     <element name="ProjPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjPlanActivityName" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityId" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+     <element name="PlannedStart" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedFinish" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedCostHour" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedRevenue" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Pricing" type="mta:ProjPlanPricing" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Status" type="mta:ProjPlanStatus" minOccurs="1" maxOccurs="1"/>
+     <element name="PercentDone" type="xsd:float" minOccurs="1" maxOccurs="1"/>
+     <element name="EstRemainingTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="EstimatedFinish" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LastUpdated" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Disabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="Description" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PlannedUsers" type="mta:ProjectPlanActivityUserData2" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="WorkTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="BillTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="UserData">
+   <annotation>
+    <documentation>UserId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserLogin" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FullName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CostHour" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Calendar" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="EMail" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="EmployeeNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectLeader" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LastPayrollDate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PersonalId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PersonNummer" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Phone1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Phone2" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FaxNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MobileNr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="GroupData">
+   <annotation>
+    <documentation>GroupId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="GroupId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="GroupName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Description" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectLeader" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectManager" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="GroupMemberData">
+   <annotation>
+    <documentation>UserId,GroupId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="GroupId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttestLevel" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ItemArticleData">
+   <annotation>
+    <documentation>ArticleId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ArticleId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Description" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VatCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VatPercent" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UnitName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PriceUnit" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="CostUnit" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MarginPercent" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="JobArticleData">
+   <annotation>
+    <documentation>ArticleId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ArticleId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Description" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VatCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VatPercent" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="CostHour" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="ArticleFixedId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ArticleDistanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Disabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="ServerCodeData">
+   <annotation>
+    <documentation>ServerCodeId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ServerCodeId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ServerCodeName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ExternalInstanceData">
+   <annotation>
+    <documentation>ExternalInstanceId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ExternalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ServerUrl" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserLogin" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Password" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="InstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="InstanceName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ServerCodeId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ServerCodeName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LastSync" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ExternalProjectData">
+   <annotation>
+    <documentation>ExternalInstanceId,ExternalProjectId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ExternalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ExternalProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ExternalProjectName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ExternalActivityMappingData">
+   <annotation>
+    <documentation>ExternalInstanceId,ExternalActivityId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ExternalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ExternalPhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ExternalActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ExternalProjectRegistration">
+   <sequence>
+     <element name="RowId" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="Date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="TimeHH" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="TimeMM" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ServiceOrder" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="drivelog" type="mta:DriveLog" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FullName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Email" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="MonthViewDaySum">
+   <sequence>
+     <element name="Date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ReportedTime" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="ScheduledTime" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="isHoliday" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="DriveLog">
+   <sequence>
+     <element name="Distance" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="Route" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VehicleId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="TimeReport">
+   <sequence>
+     <element name="RowId" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="Date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="TimeHH" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="TimeMM" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ServiceOrder" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="drivelog" type="mta:DriveLog" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttestLevel" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="ReadOnly" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="CanDelete" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="ExpenseReport">
+   <sequence>
+     <element name="ExpenseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ExpenseType" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="ExpenseTypeId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ExpenseAmt" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="ExpenseVAT" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="ForeignExpenseAmt" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="ForeignExpenseVAT" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="CurrencyCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="XRate" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="Notes" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="NoParticipants" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="Place" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Participants" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttestLevel" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="ReadOnly" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="CanDelete" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="ArticleReport">
+   <sequence>
+     <element name="RowId" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="Date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ItemArticleId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ItemCount" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ServiceOrder" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttestLevel" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="ReadOnly" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="CanDelete" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="AdditionReport">
+   <sequence>
+     <element name="RowId" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="Date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AdditionTypeId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="TimeHH" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="TimeMM" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Notes" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttestLevel" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="ReadOnly" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="CanDelete" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="Vehicle">
+   <annotation>
+    <documentation>VehicleId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="VehicleId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VehicleName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="VehicleType" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ExpenseType">
+   <annotation>
+    <documentation>ExpenseTypeId is key</documentation>
+   </annotation>
+   <sequence>
+     <element name="ExpenseTypeId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ExpenseTypeName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Representation" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="ScheduleBreak">
+   <sequence>
+     <element name="BreakType" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="Start" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="End" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="DurationMax" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="DurationMin" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="DurationStd" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MinTimeBefore" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="ScheduleDay">
+   <sequence>
+     <element name="Name" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WorkTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WorkStart" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WorkEnd" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WorkFullTime" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FlexStart" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FlexEnd" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FixedStart" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FixedEnd" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MinTimeBeforeRuleType1" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MinTimeAfterRuleType1" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Breaks" type="mta:ScheduleBreak" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="ScheduleUser">
+   <sequence>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RegDay" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ScheduleDay" type="mta:ScheduleDay" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="AttendenceData">
+   <sequence>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RegDay" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RowNr" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Activity" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AbsenceType" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Time" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttestLevel" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="ReportNr" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Adjusted" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="AttendenceLog">
+   <sequence>
+     <element name="UserId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RegDay" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RowOrder" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ClockStart" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ClockEnd" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Time" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AbsenceType" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UserNote" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AttestLevel" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="AttendenceData" type="mta:AttendenceData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="PriceList">
+   <sequence>
+     <element name="PriceListId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="PriceListName" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="CurrencyCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Disabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="Rows" type="mta:PriceListRow" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="PriceListRow">
+   <sequence>
+     <element name="Activity" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="GroupId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="PriceHour" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="PriceFixed" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PriceDistance" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="JobArticleId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="DebitFactor" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MarginPercent" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="PriceListProject">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="PriceListId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="PriceListName" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="UseFixedPrice" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="RoofPrice" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="UseTimePool" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="TimePool" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="TimePoolGratis" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="PriceListLink" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="CurrencyCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Rows" type="mta:PriceListRow" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="Currencys">
+   <sequence>
+     <element name="CurrencyCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Currency" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="XRate" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="Base" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="ValueListItem">
+   <annotation>
+    <documentation>Generic structure for value lists</documentation>
+   </annotation>
+   <sequence>
+     <element name="Id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="ValueId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="ExternalId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="Label" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="getInstancesResponse">
+   <sequence>
+     <element name="instancecount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="instances" type="mta:InstanceData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getActivitysResponse">
+   <sequence>
+     <element name="activitycount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="activitys" type="mta:ActivityData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getUserActivitysResponse">
+   <sequence>
+     <element name="activitycount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="activitys" type="mta:ActivityData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getActivitysInProjectResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:TaskData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getActivityGroupsResponse">
+   <sequence>
+     <element name="groupcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="groups" type="mta:ActivityGroupData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getActivityGroupActivitiesResponse">
+   <sequence>
+     <element name="activitycount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="activities" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getItemArticlesResponse">
+   <sequence>
+     <element name="articlecount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="articles" type="mta:ItemArticleData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getPaymentScheduleProjectRowsResponse">
+   <sequence>
+     <element name="rowcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="rows" type="mta:PaymentScheduleProjectRowData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="addPaymentScheduleProjectRowResponse">
+   <sequence>
+     <element name="roworder" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="deletePaymentScheduleProjectRowResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="getUsersResponse">
+   <sequence>
+     <element name="usercount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="users" type="mta:UserData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getGroupsResponse">
+   <sequence>
+     <element name="groupcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="groups" type="mta:GroupData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getGroupMembersResponse">
+   <sequence>
+     <element name="membercount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="members" type="mta:GroupMemberData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getCustomersResponse">
+   <sequence>
+     <element name="customercount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="customers" type="mta:CustomerData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getUserCustomersResponse">
+   <sequence>
+     <element name="customercount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="customers" type="mta:CustomerData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getProjectsResponse">
+   <sequence>
+     <element name="projectcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="projects" type="mta:ProjectData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getProjects2Response">
+   <sequence>
+     <element name="projectcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="projects" type="mta:ProjectData2" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getUserProjectsResponse">
+   <sequence>
+     <element name="projectcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="projects" type="mta:ProjectData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="addCustomerResponse">
+   <sequence>
+     <element name="customernr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="addCustomerContactResponse">
+   <sequence>
+     <element name="ContactId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getCustomerContactResponse">
+   <sequence>
+     <element name="contactcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="contacts" type="mta:CustomerContactData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="addPhaseResponse">
+   <sequence>
+     <element name="PhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getPhasesResponse">
+   <sequence>
+     <element name="phasecount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="phases" type="mta:PhaseData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="addProjectResponse">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="addProject2Response">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="addAssignmentResponse">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="AssignmentNr" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="addProjectPlanActivityResponse">
+   <sequence>
+     <element name="ProjectPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="deleteProjectPlanActivityResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="addProjectPlanActivityUserResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="deleteProjectPlanActivityUserResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="getProjectPlanActivityUserResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ProjectPlanActivityUserData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="addProjectPlanActivity2Response">
+   <sequence>
+     <element name="ProjectPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getCounterValueResponse">
+   <sequence>
+     <element name="value" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="setCounterValueResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="getMonthViewResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:MonthViewDaySum" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getDayViewResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:TimeReport" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getDayView2Response">
+   <sequence>
+     <element name="timeReportCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="timeReports" type="mta:TimeReport" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="expenseCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="expenses" type="mta:ExpenseReport" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="articleCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="articles" type="mta:ArticleReport" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="additionCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="additions" type="mta:AdditionReport" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="PeriodDayView">
+   <sequence>
+     <element name="date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="timeReportCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="timeReports" type="mta:TimeReport" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="expenseCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="expenses" type="mta:ExpenseReport" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="articleCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="articles" type="mta:ArticleReport" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="additionCount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="additions" type="mta:AdditionReport" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="readOnly" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="readOnlyReason" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getPeriodViewResponse">
+   <sequence>
+     <element name="days" type="mta:PeriodDayView" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="addTimeReportResponse">
+   <sequence>
+     <element name="RowId" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="addExpenseResponse">
+   <sequence>
+     <element name="ExpenseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="deleteExpenseResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="updateTimeReportResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="deleteTimeReportResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="getVehiclesResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:Vehicle" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getExpenseTypesResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ExpenseType" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getOptionValueResponse">
+   <sequence>
+     <element name="optionvalue" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getScheduleUserResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ScheduleUser" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getPriceListsResponse">
+   <sequence>
+     <element name="records" type="mta:PriceList" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getProjectPriceListResponse">
+   <sequence>
+     <element name="PriceList" type="mta:PriceListProject" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="changeCustomerNrResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="getCurrencyResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:Currencys" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getJobArticleResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:JobArticleData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getServerCodesResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ServerCodeData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getExternalInstanceResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ExternalInstanceData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getExternalActivityMappingResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ExternalActivityMappingData" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getExternalProjectIdsResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getExternalProjectResponse">
+   <sequence>
+     <element name="record" type="mta:ExternalProjectData" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="addExternalProjectResponse">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="getExternalProjectRegistrationsResponse">
+   <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ExternalProjectRegistration" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="setFlexInResponse">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="CostReportRow">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="RegDay" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Price" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="getCostReportAllActiveResponse">
+   <sequence>
+     <element name="rows" type="mta:CostReportRow" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="PrognosisReportRow">
+   <sequence>
+     <element name="ProjectId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="RegDay" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Price" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="getPrognosisReportAllActiveResponse">
+   <sequence>
+     <element name="rows" type="mta:PrognosisReportRow" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getAttributeValueListResponse">
+   <sequence>
+     <element name="items" type="mta:ValueListItem" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="getSelectValueListResponse">
+   <sequence>
+     <element name="items" type="mta:ValueListItem" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <!-- operation request element -->
+  <element name="login">
+   <complexType>
+    <sequence>
+     <element name="login" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="password" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="instanceid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="loginResponse">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="logout">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="logoutResponse">
+   <complexType>
+    <sequence>
+     <element name="dummy" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="changeUser">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="changeUserResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="whoAmI">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getInstances">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="instanceid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getActivitys">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="activityid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="activityname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getUserActivitys">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="activityid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="activityname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getActivitysInProject">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="startdate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="enddate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getActivityGroups">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="activitygroupid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="activitygroupname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getActivityGroupActivities">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="activitygroupid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getItemArticles">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="articleid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="description" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getPaymentScheduleProjectRows">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="roworder" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addPaymentScheduleProjectRow">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="row" type="mta:PaymentScheduleProjectRowData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deletePaymentScheduleProjectRow">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="roworder" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getUsers">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="login" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="fullname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getUserId">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userlogin" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="fullname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="email" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="employeenr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="personalid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="pnr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="department" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="costcenter" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectLeader" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="projectManager" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="getUserIdResponse">
+   <complexType>
+    <sequence>
+     <element name="userId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getGroups">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="groupid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="groupname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getGroupMembers">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="groupid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getCustomers">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customernr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customername" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getUserCustomers">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customernr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customername" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjects">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="leaderid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="company" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjects2">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="leaderid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="managerid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectnr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="company" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="includeDisabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+     <element name="includePriceListName" type="xsd:boolean" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getUserProjects">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="search" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customernr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addCustomer">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customer" type="mta:CustomerData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addCustomerContact">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customercontact" type="mta:CustomerContactData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getCustomerContacts">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="customernr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="contactid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addPhase">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="phase" type="mta:PhaseData" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getPhases">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="phaseid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="phasename" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addProject">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="project" type="mta:ProjectData" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addProject2">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="project" type="mta:ProjectData2" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addAssignment">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="assignment" type="mta:AssignmentData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addProjectPlanActivity">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projplan-act" type="mta:ProjectPlanActivityData" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjectPlanActivity">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectPlanActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="getProjectPlanActivityResponse">
+   <complexType>
+    <sequence>
+     <element name="recordcount" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="records" type="mta:ProjectPlanActivityData" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteProjectPlanActivity">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projplan-act" type="mta:ProjectPlanActivityData" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addProjectPlanActivityUser">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projplan-act-user" type="mta:ProjectPlanActivityUserData" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteProjectPlanActivityUser">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projplan-act-user" type="mta:ProjectPlanActivityUserData" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjectPlanActivityUser">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectplan-activityid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addProjectPlanActivity2">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projplanactivity" type="mta:ProjectPlanActivityData2" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getCounterValue">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="counterName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="setCounterValue">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="counterName" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="counterValue" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getMonthView">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="year" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="month" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getDayView">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getDayView2">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getPeriodView">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="startdate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="enddate" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addTimeReport">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="timereport" type="mta:TimeReport" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addExpense">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="expense" type="mta:ExpenseReport" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteExpense">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="expenseid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="updateTimeReport">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RowId" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="timereport" type="mta:TimeReport" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteTimeReport">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="RowId" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="lockMonth">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="month" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="lockMonthResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getVehicles">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExpenseTypes">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getOptionValue">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="optionname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="setScheduleOnDay">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="date" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Schedule" type="mta:ScheduleDay" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="setScheduleOnDayResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getScheduleUser">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="date-start" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="date-end" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="replaceAttendence">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="regday" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="attendence" type="mta:AttendenceLog" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="replaceAttendenceResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getPriceLists">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="pricelistid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="pricelistname" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="includeDisabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjectPriceList">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="updateProjectPriceList">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="pricelist" type="mta:PriceListProject" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="updateProjectPriceListResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="setSingleProjectPrice">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="rec" type="mta:PriceListRow" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="deleteit" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="setSingleProjectPriceResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="replaceProjectPriceList">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="pricelistid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="pricelistlink" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="replaceProjectPriceListResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="changeCustomerNr">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="oldnr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="newnr" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addCurrency">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="rec" type="mta:Currencys" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="addCurrencyResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getCurrency">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="currencycode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteCurrency">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="currencycode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="deleteCurrencyResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addJobArticle">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="rec" type="mta:JobArticleData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="addJobArticleResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getJobArticle">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="articleid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteJobArticle">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="articleid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="deleteJobArticleResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addItemArticle">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="rec" type="mta:ItemArticleData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="addItemArticleResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteItemArticle">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="articleid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="deleteItemArticleResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getServerCodes">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExternalInstance">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addExternalInstance">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="rec" type="mta:ExternalInstanceData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="addExternalInstanceResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteExternalInstance">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="deleteExternalInstanceResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExternalActivityMapping">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addExternalActivityMapping">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="rec" type="mta:ExternalActivityMappingData" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="addExternalActivityMappingResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="deleteExternalActivityMapping">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalPhaseId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalActivityId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="deleteExternalActivityMappingResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExternalProjectIds">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="serverCode" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExternalProject">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalInstanceId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalProjectId" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addExternalProject">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalProject" type="mta:ExternalProjectData" minOccurs="1" maxOccurs="1"/>
+     <element name="project" type="mta:ProjectData2" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExternalProjectRegistrations">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="externalProject" type="mta:ExternalProjectData" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="addExternalProjectRegistration">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectRegistrations" type="mta:ExternalProjectRegistration" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="addExternalProjectRegistrationResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="markExternalProjectRegistration">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="projectRegistrations" type="mta:ExternalProjectRegistration" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="markExternalProjectRegistrationResponse">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="setFlexIn">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="userid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="month" type="xsd:date" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="flexin" type="mta:regtime" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getCostReportAllActive">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="grouptype" type="mta:ReportGroupEnum" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getPrognosisReportAllActive">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="grouptype" type="mta:ReportGroupEnum" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getAttributeValueList">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="attributeid" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getSelectValueList">
+   <complexType>
+    <sequence>
+     <element name="session" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="list" type="mta:ValueListEnum" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="WhoAmIResponse" type="mta:whoAmIResponse"/>
+  <!-- operation response element -->
+  <element name="getInstancesResponse" type="mta:getInstancesResponse"/>
+  <!-- operation response element -->
+  <element name="getActivitysResponse" type="mta:getActivitysResponse"/>
+  <!-- operation response element -->
+  <element name="getUserActivitysResponse" type="mta:getUserActivitysResponse"/>
+  <!-- operation response element -->
+  <element name="getActivitysInProjectResponse" type="mta:getActivitysInProjectResponse"/>
+  <!-- operation response element -->
+  <element name="getActivityGroupsResponse" type="mta:getActivityGroupsResponse"/>
+  <!-- operation response element -->
+  <element name="getActivityGroupActivitiesResponse" type="mta:getActivityGroupActivitiesResponse"/>
+  <!-- operation response element -->
+  <element name="getItemArticlesResponse" type="mta:getItemArticlesResponse"/>
+  <!-- operation response element -->
+  <element name="getPaymentScheduleProjectRowsResponse" type="mta:getPaymentScheduleProjectRowsResponse"/>
+  <!-- operation response element -->
+  <element name="addPaymentScheduleProjectRowResponse" type="mta:addPaymentScheduleProjectRowResponse"/>
+  <!-- operation response element -->
+  <element name="deletePaymentScheduleProjectRowResponse" type="mta:deletePaymentScheduleProjectRowResponse"/>
+  <!-- operation response element -->
+  <element name="getUsersResponse" type="mta:getUsersResponse"/>
+  <!-- operation response element -->
+  <element name="getGroupsResponse" type="mta:getGroupsResponse"/>
+  <!-- operation response element -->
+  <element name="getGroupMembersResponse" type="mta:getGroupMembersResponse"/>
+  <!-- operation response element -->
+  <element name="getCustomersResponse" type="mta:getCustomersResponse"/>
+  <!-- operation response element -->
+  <element name="getUserCustomersResponse" type="mta:getUserCustomersResponse"/>
+  <!-- operation response element -->
+  <element name="getProjectsResponse" type="mta:getProjectsResponse"/>
+  <!-- operation response element -->
+  <element name="getProjects2Response" type="mta:getProjects2Response"/>
+  <!-- operation response element -->
+  <element name="getUserProjectsResponse" type="mta:getUserProjectsResponse"/>
+  <!-- operation response element -->
+  <element name="addCustomerResponse" type="mta:addCustomerResponse"/>
+  <!-- operation response element -->
+  <element name="addCustomerContactResponse" type="mta:addCustomerContactResponse"/>
+  <!-- operation response element -->
+  <element name="getCustomerContactResponse" type="mta:getCustomerContactResponse"/>
+  <!-- operation response element -->
+  <element name="addPhaseResponse" type="mta:addPhaseResponse"/>
+  <!-- operation response element -->
+  <element name="getPhasesResponse" type="mta:getPhasesResponse"/>
+  <!-- operation response element -->
+  <element name="addProjectResponse" type="mta:addProjectResponse"/>
+  <!-- operation response element -->
+  <element name="addProject2Response" type="mta:addProject2Response"/>
+  <!-- operation response element -->
+  <element name="addAssignmentResponse" type="mta:addAssignmentResponse"/>
+  <!-- operation response element -->
+  <element name="addProjectPlanActivityResponse" type="mta:addProjectPlanActivityResponse"/>
+  <!-- operation response element -->
+  <element name="deleteProjectPlanActivityResponse" type="mta:deleteProjectPlanActivityResponse"/>
+  <!-- operation response element -->
+  <element name="addProjectPlanActivityUserResponse" type="mta:addProjectPlanActivityUserResponse"/>
+  <!-- operation response element -->
+  <element name="deleteProjectPlanActivityUserResponse" type="mta:deleteProjectPlanActivityUserResponse"/>
+  <!-- operation response element -->
+  <element name="getProjectPlanActivityUserResponse" type="mta:getProjectPlanActivityUserResponse"/>
+  <!-- operation response element -->
+  <element name="addProjectPlanActivity2Response" type="mta:addProjectPlanActivity2Response"/>
+  <!-- operation response element -->
+  <element name="getCounterValueResponse" type="mta:getCounterValueResponse"/>
+  <!-- operation response element -->
+  <element name="setCounterValueResponse" type="mta:setCounterValueResponse"/>
+  <!-- operation response element -->
+  <element name="getMonthViewResponse" type="mta:getMonthViewResponse"/>
+  <!-- operation response element -->
+  <element name="getDayViewResponse" type="mta:getDayViewResponse"/>
+  <!-- operation response element -->
+  <element name="getDayView2Response" type="mta:getDayView2Response"/>
+  <!-- operation response element -->
+  <element name="getPeriodViewResponse" type="mta:getPeriodViewResponse"/>
+  <!-- operation response element -->
+  <element name="addTimeReportResponse" type="mta:addTimeReportResponse"/>
+  <!-- operation response element -->
+  <element name="addExpenseResponse" type="mta:addExpenseResponse"/>
+  <!-- operation response element -->
+  <element name="deleteExpenseResponse" type="mta:deleteExpenseResponse"/>
+  <!-- operation response element -->
+  <element name="updateTimeReportResponse" type="mta:updateTimeReportResponse"/>
+  <!-- operation response element -->
+  <element name="deleteTimeReportResponse" type="mta:deleteTimeReportResponse"/>
+  <!-- operation response element -->
+  <element name="getVehiclesResponse" type="mta:getVehiclesResponse"/>
+  <!-- operation response element -->
+  <element name="getExpenseTypesResponse" type="mta:getExpenseTypesResponse"/>
+  <!-- operation response element -->
+  <element name="getOptionValueResponse" type="mta:getOptionValueResponse"/>
+  <!-- operation response element -->
+  <element name="getScheduleUserResponse" type="mta:getScheduleUserResponse"/>
+  <!-- operation response element -->
+  <element name="getPriceListsResponse" type="mta:getPriceListsResponse"/>
+  <!-- operation response element -->
+  <element name="getProjectPriceListResponse" type="mta:getProjectPriceListResponse"/>
+  <!-- operation response element -->
+  <element name="changeCustomerNrResponse" type="mta:changeCustomerNrResponse"/>
+  <!-- operation response element -->
+  <element name="getCurrencyResponse" type="mta:getCurrencyResponse"/>
+  <!-- operation response element -->
+  <element name="getJobArticleResponse" type="mta:getJobArticleResponse"/>
+  <!-- operation response element -->
+  <element name="getServerCodesResponse" type="mta:getServerCodesResponse"/>
+  <!-- operation response element -->
+  <element name="getExternalInstanceResponse" type="mta:getExternalInstanceResponse"/>
+  <!-- operation response element -->
+  <element name="getExternalActivityMappingResponse" type="mta:getExternalActivityMappingResponse"/>
+  <!-- operation response element -->
+  <element name="getExternalProjectIdsResponse" type="mta:getExternalProjectIdsResponse"/>
+  <!-- operation response element -->
+  <element name="getExternalProjectResponse" type="mta:getExternalProjectResponse"/>
+  <!-- operation response element -->
+  <element name="addExternalProjectResponse" type="mta:addExternalProjectResponse"/>
+  <!-- operation response element -->
+  <element name="getExternalProjectRegistrationsResponse" type="mta:getExternalProjectRegistrationsResponse"/>
+  <!-- operation response element -->
+  <element name="setFlexInResponse" type="mta:setFlexInResponse"/>
+  <!-- operation response element -->
+  <element name="getCostReportAllActiveResponse" type="mta:getCostReportAllActiveResponse"/>
+  <!-- operation response element -->
+  <element name="getPrognosisReportAllActiveResponse" type="mta:getPrognosisReportAllActiveResponse"/>
+  <!-- operation response element -->
+  <element name="getAttributeValueListResponse" type="mta:getAttributeValueListResponse"/>
+  <!-- operation response element -->
+  <element name="getSelectValueListResponse" type="mta:getSelectValueListResponse"/>
+ </schema>
+
+</types>
+
+<message name="loginRequest">
+ <part name="parameters" element="mta:login"/>
+</message>
+
+<message name="loginResponse">
+ <part name="parameters" element="mta:loginResponse"/>
+</message>
+
+<message name="logoutRequest">
+ <part name="parameters" element="mta:logout"/>
+</message>
+
+<message name="logoutResponse">
+ <part name="parameters" element="mta:logoutResponse"/>
+</message>
+
+<message name="changeUser">
+ <part name="parameters" element="mta:changeUser"/>
+</message>
+
+<message name="changeUserResponse">
+ <part name="parameters" element="mta:changeUserResponse"/>
+</message>
+
+<message name="whoAmI">
+ <part name="parameters" element="mta:whoAmI"/>
+</message>
+
+<message name="whoAmIResponse">
+ <part name="parameters" element="mta:WhoAmIResponse"/>
+</message>
+
+<message name="getInstances">
+ <part name="parameters" element="mta:getInstances"/>
+</message>
+
+<message name="getInstancesResponse">
+ <part name="parameters" element="mta:getInstancesResponse"/>
+</message>
+
+<message name="getActivitys">
+ <part name="parameters" element="mta:getActivitys"/>
+</message>
+
+<message name="getActivitysResponse">
+ <part name="parameters" element="mta:getActivitysResponse"/>
+</message>
+
+<message name="getUserActivitys">
+ <part name="parameters" element="mta:getUserActivitys"/>
+</message>
+
+<message name="getUserActivitysResponse">
+ <part name="parameters" element="mta:getUserActivitysResponse"/>
+</message>
+
+<message name="getActivitysInProject">
+ <part name="parameters" element="mta:getActivitysInProject"/>
+</message>
+
+<message name="getActivitysInProjectResponse">
+ <part name="parameters" element="mta:getActivitysInProjectResponse"/>
+</message>
+
+<message name="getActivityGroups">
+ <part name="parameters" element="mta:getActivityGroups"/>
+</message>
+
+<message name="getActivityGroupsResponse">
+ <part name="parameters" element="mta:getActivityGroupsResponse"/>
+</message>
+
+<message name="getActivityGroupActivities">
+ <part name="parameters" element="mta:getActivityGroupActivities"/>
+</message>
+
+<message name="getActivityGroupActivitiesResponse">
+ <part name="parameters" element="mta:getActivityGroupActivitiesResponse"/>
+</message>
+
+<message name="getItemArticles">
+ <part name="parameters" element="mta:getItemArticles"/>
+</message>
+
+<message name="getItemArticlesResponse">
+ <part name="parameters" element="mta:getItemArticlesResponse"/>
+</message>
+
+<message name="getPaymentScheduleProjectRows">
+ <part name="parameters" element="mta:getPaymentScheduleProjectRows"/>
+</message>
+
+<message name="getPaymentScheduleProjectRowsResponse">
+ <part name="parameters" element="mta:getPaymentScheduleProjectRowsResponse"/>
+</message>
+
+<message name="addPaymentScheduleProjectRow">
+ <part name="parameters" element="mta:addPaymentScheduleProjectRow"/>
+</message>
+
+<message name="addPaymentScheduleProjectRowResponse">
+ <part name="parameters" element="mta:addPaymentScheduleProjectRowResponse"/>
+</message>
+
+<message name="deletePaymentScheduleProjectRow">
+ <part name="parameters" element="mta:deletePaymentScheduleProjectRow"/>
+</message>
+
+<message name="deletePaymentScheduleProjectRowResponse">
+ <part name="parameters" element="mta:deletePaymentScheduleProjectRowResponse"/>
+</message>
+
+<message name="getUsers">
+ <part name="parameters" element="mta:getUsers"/>
+</message>
+
+<message name="getUsersResponse">
+ <part name="parameters" element="mta:getUsersResponse"/>
+</message>
+
+<message name="getUserIdRequest">
+ <part name="parameters" element="mta:getUserId"/>
+</message>
+
+<message name="getUserIdResponse">
+ <part name="parameters" element="mta:getUserIdResponse"/>
+</message>
+
+<message name="getGroups">
+ <part name="parameters" element="mta:getGroups"/>
+</message>
+
+<message name="getGroupsResponse">
+ <part name="parameters" element="mta:getGroupsResponse"/>
+</message>
+
+<message name="getGroupMembers">
+ <part name="parameters" element="mta:getGroupMembers"/>
+</message>
+
+<message name="getGroupMembersResponse">
+ <part name="parameters" element="mta:getGroupMembersResponse"/>
+</message>
+
+<message name="getCustomers">
+ <part name="parameters" element="mta:getCustomers"/>
+</message>
+
+<message name="getCustomersResponse">
+ <part name="parameters" element="mta:getCustomersResponse"/>
+</message>
+
+<message name="getUserCustomers">
+ <part name="parameters" element="mta:getUserCustomers"/>
+</message>
+
+<message name="getUserCustomersResponse">
+ <part name="parameters" element="mta:getUserCustomersResponse"/>
+</message>
+
+<message name="getProjects">
+ <part name="parameters" element="mta:getProjects"/>
+</message>
+
+<message name="getProjectsResponse">
+ <part name="parameters" element="mta:getProjectsResponse"/>
+</message>
+
+<message name="getProjects2">
+ <part name="parameters" element="mta:getProjects2"/>
+</message>
+
+<message name="getProjects2Response">
+ <part name="parameters" element="mta:getProjects2Response"/>
+</message>
+
+<message name="getUserProjects">
+ <part name="parameters" element="mta:getUserProjects"/>
+</message>
+
+<message name="getUserProjectsResponse">
+ <part name="parameters" element="mta:getUserProjectsResponse"/>
+</message>
+
+<message name="addCustomer">
+ <part name="parameters" element="mta:addCustomer"/>
+</message>
+
+<message name="addCustomerResponse">
+ <part name="parameters" element="mta:addCustomerResponse"/>
+</message>
+
+<message name="addCustomerContact">
+ <part name="parameters" element="mta:addCustomerContact"/>
+</message>
+
+<message name="addCustomerContactResponse">
+ <part name="parameters" element="mta:addCustomerContactResponse"/>
+</message>
+
+<message name="getCustomerContacts">
+ <part name="parameters" element="mta:getCustomerContacts"/>
+</message>
+
+<message name="getCustomerContactResponse">
+ <part name="parameters" element="mta:getCustomerContactResponse"/>
+</message>
+
+<message name="addPhase">
+ <part name="parameters" element="mta:addPhase"/>
+</message>
+
+<message name="addPhaseResponse">
+ <part name="parameters" element="mta:addPhaseResponse"/>
+</message>
+
+<message name="getPhases">
+ <part name="parameters" element="mta:getPhases"/>
+</message>
+
+<message name="getPhasesResponse">
+ <part name="parameters" element="mta:getPhasesResponse"/>
+</message>
+
+<message name="addProject">
+ <part name="parameters" element="mta:addProject"/>
+</message>
+
+<message name="addProjectResponse">
+ <part name="parameters" element="mta:addProjectResponse"/>
+</message>
+
+<message name="addProject2">
+ <part name="parameters" element="mta:addProject2"/>
+</message>
+
+<message name="addProject2Response">
+ <part name="parameters" element="mta:addProject2Response"/>
+</message>
+
+<message name="addAssignment">
+ <part name="parameters" element="mta:addAssignment"/>
+</message>
+
+<message name="addAssignmentResponse">
+ <part name="parameters" element="mta:addAssignmentResponse"/>
+</message>
+
+<message name="addProjectPlanActivity">
+ <part name="parameters" element="mta:addProjectPlanActivity"/>
+</message>
+
+<message name="addProjectPlanActivityResponse">
+ <part name="parameters" element="mta:addProjectPlanActivityResponse"/>
+</message>
+
+<message name="getProjectPlanActivity">
+ <part name="parameters" element="mta:getProjectPlanActivity"/>
+</message>
+
+<message name="getProjectPlanActivityResponse">
+ <part name="parameters" element="mta:getProjectPlanActivityResponse"/>
+</message>
+
+<message name="deleteProjectPlanActivity">
+ <part name="parameters" element="mta:deleteProjectPlanActivity"/>
+</message>
+
+<message name="deleteProjectPlanActivityResponse">
+ <part name="parameters" element="mta:deleteProjectPlanActivityResponse"/>
+</message>
+
+<message name="addProjectPlanActivityUser">
+ <part name="parameters" element="mta:addProjectPlanActivityUser"/>
+</message>
+
+<message name="addProjectPlanActivityUserResponse">
+ <part name="parameters" element="mta:addProjectPlanActivityUserResponse"/>
+</message>
+
+<message name="deleteProjectPlanActivityUser">
+ <part name="parameters" element="mta:deleteProjectPlanActivityUser"/>
+</message>
+
+<message name="deleteProjectPlanActivityUserResponse">
+ <part name="parameters" element="mta:deleteProjectPlanActivityUserResponse"/>
+</message>
+
+<message name="getProjectPlanActivityUser">
+ <part name="parameters" element="mta:getProjectPlanActivityUser"/>
+</message>
+
+<message name="getProjectPlanActivityUserResponse">
+ <part name="parameters" element="mta:getProjectPlanActivityUserResponse"/>
+</message>
+
+<message name="addProjectPlanActivity2">
+ <part name="parameters" element="mta:addProjectPlanActivity2"/>
+</message>
+
+<message name="addProjectPlanActivity2Response">
+ <part name="parameters" element="mta:addProjectPlanActivity2Response"/>
+</message>
+
+<message name="getCounterValue">
+ <part name="parameters" element="mta:getCounterValue"/>
+</message>
+
+<message name="getCounterValueResponse">
+ <part name="parameters" element="mta:getCounterValueResponse"/>
+</message>
+
+<message name="setCounterValue">
+ <part name="parameters" element="mta:setCounterValue"/>
+</message>
+
+<message name="setCounterValueResponse">
+ <part name="parameters" element="mta:setCounterValueResponse"/>
+</message>
+
+<message name="getMonthView">
+ <part name="parameters" element="mta:getMonthView"/>
+</message>
+
+<message name="getMonthViewResponse">
+ <part name="parameters" element="mta:getMonthViewResponse"/>
+</message>
+
+<message name="getDayView">
+ <part name="parameters" element="mta:getDayView"/>
+</message>
+
+<message name="getDayViewResponse">
+ <part name="parameters" element="mta:getDayViewResponse"/>
+</message>
+
+<message name="getDayView2">
+ <part name="parameters" element="mta:getDayView2"/>
+</message>
+
+<message name="getDayView2Response">
+ <part name="parameters" element="mta:getDayView2Response"/>
+</message>
+
+<message name="getPeriodView">
+ <part name="parameters" element="mta:getPeriodView"/>
+</message>
+
+<message name="getPeriodViewResponse">
+ <part name="parameters" element="mta:getPeriodViewResponse"/>
+</message>
+
+<message name="addTimeReport">
+ <part name="parameters" element="mta:addTimeReport"/>
+</message>
+
+<message name="addTimeReportResponse">
+ <part name="parameters" element="mta:addTimeReportResponse"/>
+</message>
+
+<message name="addExpense">
+ <part name="parameters" element="mta:addExpense"/>
+</message>
+
+<message name="addExpenseResponse">
+ <part name="parameters" element="mta:addExpenseResponse"/>
+</message>
+
+<message name="deleteExpense">
+ <part name="parameters" element="mta:deleteExpense"/>
+</message>
+
+<message name="deleteExpenseResponse">
+ <part name="parameters" element="mta:deleteExpenseResponse"/>
+</message>
+
+<message name="updateTimeReport">
+ <part name="parameters" element="mta:updateTimeReport"/>
+</message>
+
+<message name="updateTimeReportResponse">
+ <part name="parameters" element="mta:updateTimeReportResponse"/>
+</message>
+
+<message name="deleteTimeReport">
+ <part name="parameters" element="mta:deleteTimeReport"/>
+</message>
+
+<message name="deleteTimeReportResponse">
+ <part name="parameters" element="mta:deleteTimeReportResponse"/>
+</message>
+
+<message name="lockMonth">
+ <part name="parameters" element="mta:lockMonth"/>
+</message>
+
+<message name="lockMonthResponse">
+ <part name="parameters" element="mta:lockMonthResponse"/>
+</message>
+
+<message name="getVehicles">
+ <part name="parameters" element="mta:getVehicles"/>
+</message>
+
+<message name="getVehiclesResponse">
+ <part name="parameters" element="mta:getVehiclesResponse"/>
+</message>
+
+<message name="getExpenseTypes">
+ <part name="parameters" element="mta:getExpenseTypes"/>
+</message>
+
+<message name="getExpenseTypesResponse">
+ <part name="parameters" element="mta:getExpenseTypesResponse"/>
+</message>
+
+<message name="getOptionValue">
+ <part name="parameters" element="mta:getOptionValue"/>
+</message>
+
+<message name="getOptionValueResponse">
+ <part name="parameters" element="mta:getOptionValueResponse"/>
+</message>
+
+<message name="setScheduleOnDay">
+ <part name="parameters" element="mta:setScheduleOnDay"/>
+</message>
+
+<message name="setScheduleOnDayResponse">
+ <part name="parameters" element="mta:setScheduleOnDayResponse"/>
+</message>
+
+<message name="getScheduleUser">
+ <part name="parameters" element="mta:getScheduleUser"/>
+</message>
+
+<message name="getScheduleUserResponse">
+ <part name="parameters" element="mta:getScheduleUserResponse"/>
+</message>
+
+<message name="replaceAttendence">
+ <part name="parameters" element="mta:replaceAttendence"/>
+</message>
+
+<message name="replaceAttendenceResponse">
+ <part name="parameters" element="mta:replaceAttendenceResponse"/>
+</message>
+
+<message name="getPriceLists">
+ <part name="parameters" element="mta:getPriceLists"/>
+</message>
+
+<message name="getPriceListsResponse">
+ <part name="parameters" element="mta:getPriceListsResponse"/>
+</message>
+
+<message name="getProjectPriceList">
+ <part name="parameters" element="mta:getProjectPriceList"/>
+</message>
+
+<message name="getProjectPriceListResponse">
+ <part name="parameters" element="mta:getProjectPriceListResponse"/>
+</message>
+
+<message name="updateProjectPriceList">
+ <part name="parameters" element="mta:updateProjectPriceList"/>
+</message>
+
+<message name="updateProjectPriceListResponse">
+ <part name="parameters" element="mta:updateProjectPriceListResponse"/>
+</message>
+
+<message name="setSingleProjectPrice">
+ <part name="parameters" element="mta:setSingleProjectPrice"/>
+</message>
+
+<message name="setSingleProjectPriceResponse">
+ <part name="parameters" element="mta:setSingleProjectPriceResponse"/>
+</message>
+
+<message name="replaceProjectPriceList">
+ <part name="parameters" element="mta:replaceProjectPriceList"/>
+</message>
+
+<message name="replaceProjectPriceListResponse">
+ <part name="parameters" element="mta:replaceProjectPriceListResponse"/>
+</message>
+
+<message name="changeCustomerNr">
+ <part name="parameters" element="mta:changeCustomerNr"/>
+</message>
+
+<message name="changeCustomerNrResponse">
+ <part name="parameters" element="mta:changeCustomerNrResponse"/>
+</message>
+
+<message name="addCurrency">
+ <part name="parameters" element="mta:addCurrency"/>
+</message>
+
+<message name="addCurrencyResponse">
+ <part name="parameters" element="mta:addCurrencyResponse"/>
+</message>
+
+<message name="getCurrency">
+ <part name="parameters" element="mta:getCurrency"/>
+</message>
+
+<message name="getCurrencyResponse">
+ <part name="parameters" element="mta:getCurrencyResponse"/>
+</message>
+
+<message name="deleteCurrency">
+ <part name="parameters" element="mta:deleteCurrency"/>
+</message>
+
+<message name="deleteCurrencyResponse">
+ <part name="parameters" element="mta:deleteCurrencyResponse"/>
+</message>
+
+<message name="addJobArticle">
+ <part name="parameters" element="mta:addJobArticle"/>
+</message>
+
+<message name="addJobArticleResponse">
+ <part name="parameters" element="mta:addJobArticleResponse"/>
+</message>
+
+<message name="getJobArticle">
+ <part name="parameters" element="mta:getJobArticle"/>
+</message>
+
+<message name="getJobArticleResponse">
+ <part name="parameters" element="mta:getJobArticleResponse"/>
+</message>
+
+<message name="deleteJobArticle">
+ <part name="parameters" element="mta:deleteJobArticle"/>
+</message>
+
+<message name="deleteJobArticleResponse">
+ <part name="parameters" element="mta:deleteJobArticleResponse"/>
+</message>
+
+<message name="addItemArticle">
+ <part name="parameters" element="mta:addItemArticle"/>
+</message>
+
+<message name="addItemArticleResponse">
+ <part name="parameters" element="mta:addItemArticleResponse"/>
+</message>
+
+<message name="deleteItemArticle">
+ <part name="parameters" element="mta:deleteItemArticle"/>
+</message>
+
+<message name="deleteItemArticleResponse">
+ <part name="parameters" element="mta:deleteItemArticleResponse"/>
+</message>
+
+<message name="getServerCodes">
+ <part name="parameters" element="mta:getServerCodes"/>
+</message>
+
+<message name="getServerCodesResponse">
+ <part name="parameters" element="mta:getServerCodesResponse"/>
+</message>
+
+<message name="getExternalInstance">
+ <part name="parameters" element="mta:getExternalInstance"/>
+</message>
+
+<message name="getExternalInstanceResponse">
+ <part name="parameters" element="mta:getExternalInstanceResponse"/>
+</message>
+
+<message name="addExternalInstance">
+ <part name="parameters" element="mta:addExternalInstance"/>
+</message>
+
+<message name="addExternalInstanceResponse">
+ <part name="parameters" element="mta:addExternalInstanceResponse"/>
+</message>
+
+<message name="deleteExternalInstance">
+ <part name="parameters" element="mta:deleteExternalInstance"/>
+</message>
+
+<message name="deleteExternalInstanceResponse">
+ <part name="parameters" element="mta:deleteExternalInstanceResponse"/>
+</message>
+
+<message name="getExternalActivityMapping">
+ <part name="parameters" element="mta:getExternalActivityMapping"/>
+</message>
+
+<message name="getExternalActivityMappingResponse">
+ <part name="parameters" element="mta:getExternalActivityMappingResponse"/>
+</message>
+
+<message name="addExternalActivityMapping">
+ <part name="parameters" element="mta:addExternalActivityMapping"/>
+</message>
+
+<message name="addExternalActivityMappingResponse">
+ <part name="parameters" element="mta:addExternalActivityMappingResponse"/>
+</message>
+
+<message name="deleteExternalActivityMapping">
+ <part name="parameters" element="mta:deleteExternalActivityMapping"/>
+</message>
+
+<message name="deleteExternalActivityMappingResponse">
+ <part name="parameters" element="mta:deleteExternalActivityMappingResponse"/>
+</message>
+
+<message name="getExternalProjectIds">
+ <part name="parameters" element="mta:getExternalProjectIds"/>
+</message>
+
+<message name="getExternalProjectIdsResponse">
+ <part name="parameters" element="mta:getExternalProjectIdsResponse"/>
+</message>
+
+<message name="getExternalProject">
+ <part name="parameters" element="mta:getExternalProject"/>
+</message>
+
+<message name="getExternalProjectResponse">
+ <part name="parameters" element="mta:getExternalProjectResponse"/>
+</message>
+
+<message name="addExternalProject">
+ <part name="parameters" element="mta:addExternalProject"/>
+</message>
+
+<message name="addExternalProjectResponse">
+ <part name="parameters" element="mta:addExternalProjectResponse"/>
+</message>
+
+<message name="getExternalProjectRegistrations">
+ <part name="parameters" element="mta:getExternalProjectRegistrations"/>
+</message>
+
+<message name="getExternalProjectRegistrationsResponse">
+ <part name="parameters" element="mta:getExternalProjectRegistrationsResponse"/>
+</message>
+
+<message name="addExternalProjectRegistration">
+ <part name="parameters" element="mta:addExternalProjectRegistration"/>
+</message>
+
+<message name="addExternalProjectRegistrationResponse">
+ <part name="parameters" element="mta:addExternalProjectRegistrationResponse"/>
+</message>
+
+<message name="markExternalProjectRegistration">
+ <part name="parameters" element="mta:markExternalProjectRegistration"/>
+</message>
+
+<message name="markExternalProjectRegistrationResponse">
+ <part name="parameters" element="mta:markExternalProjectRegistrationResponse"/>
+</message>
+
+<message name="setFlexIn">
+ <part name="parameters" element="mta:setFlexIn"/>
+</message>
+
+<message name="setFlexInResponse">
+ <part name="parameters" element="mta:setFlexInResponse"/>
+</message>
+
+<message name="getCostReportAllActive">
+ <part name="parameters" element="mta:getCostReportAllActive"/>
+</message>
+
+<message name="getCostReportAllActiveResponse">
+ <part name="parameters" element="mta:getCostReportAllActiveResponse"/>
+</message>
+
+<message name="getPrognosisReportAllActive">
+ <part name="parameters" element="mta:getPrognosisReportAllActive"/>
+</message>
+
+<message name="getPrognosisReportAllActiveResponse">
+ <part name="parameters" element="mta:getPrognosisReportAllActiveResponse"/>
+</message>
+
+<message name="getAttributeValueList">
+ <part name="parameters" element="mta:getAttributeValueList"/>
+</message>
+
+<message name="getAttributeValueListResponse">
+ <part name="parameters" element="mta:getAttributeValueListResponse"/>
+</message>
+
+<message name="getSelectValueList">
+ <part name="parameters" element="mta:getSelectValueList"/>
+</message>
+
+<message name="getSelectValueListResponse">
+ <part name="parameters" element="mta:getSelectValueListResponse"/>
+</message>
+
+<portType name="API">
+ <operation name="login">
+  <documentation>login to recieve valid session token</documentation>
+  <input message="tns:loginRequest"/>
+  <output message="tns:loginResponse"/>
+ </operation>
+ <operation name="logout">
+  <documentation>logout to invalidate session token</documentation>
+  <input message="tns:logoutRequest"/>
+  <output message="tns:logoutResponse"/>
+ </operation>
+ <operation name="changeUser">
+  <documentation>Service definition of function mta__changeUser</documentation>
+  <input message="tns:changeUser"/>
+  <output message="tns:changeUserResponse"/>
+ </operation>
+ <operation name="whoAmI">
+  <documentation>Service definition of function mta__whoAmI</documentation>
+  <input message="tns:whoAmI"/>
+  <output message="tns:whoAmIResponse"/>
+ </operation>
+ <operation name="getInstances">
+  <documentation>get list of valid instances on server</documentation>
+  <input message="tns:getInstances"/>
+  <output message="tns:getInstancesResponse"/>
+ </operation>
+ <operation name="getActivitys">
+  <documentation>get all activitys</documentation>
+  <input message="tns:getActivitys"/>
+  <output message="tns:getActivitysResponse"/>
+ </operation>
+ <operation name="getUserActivitys">
+  <documentation>get all activitys for the user</documentation>
+  <input message="tns:getUserActivitys"/>
+  <output message="tns:getUserActivitysResponse"/>
+ </operation>
+ <operation name="getActivitysInProject">
+  <documentation>get all activitys and tasks for a project</documentation>
+  <input message="tns:getActivitysInProject"/>
+  <output message="tns:getActivitysInProjectResponse"/>
+ </operation>
+ <operation name="getActivityGroups">
+  <documentation>get activitygroups</documentation>
+  <input message="tns:getActivityGroups"/>
+  <output message="tns:getActivityGroupsResponse"/>
+ </operation>
+ <operation name="getActivityGroupActivities">
+  <documentation>get all activitys in activitygroup</documentation>
+  <input message="tns:getActivityGroupActivities"/>
+  <output message="tns:getActivityGroupActivitiesResponse"/>
+ </operation>
+ <operation name="getItemArticles">
+  <documentation>get all itemarticles</documentation>
+  <input message="tns:getItemArticles"/>
+  <output message="tns:getItemArticlesResponse"/>
+ </operation>
+ <operation name="getPaymentScheduleProjectRows">
+  <documentation>get paymentschedulerows for project</documentation>
+  <input message="tns:getPaymentScheduleProjectRows"/>
+  <output message="tns:getPaymentScheduleProjectRowsResponse"/>
+ </operation>
+ <operation name="addPaymentScheduleProjectRow">
+  <documentation>add/update paymentschedulerow for project</documentation>
+  <input message="tns:addPaymentScheduleProjectRow"/>
+  <output message="tns:addPaymentScheduleProjectRowResponse"/>
+ </operation>
+ <operation name="deletePaymentScheduleProjectRow">
+  <documentation>delete paymentschedulerow for project</documentation>
+  <input message="tns:deletePaymentScheduleProjectRow"/>
+  <output message="tns:deletePaymentScheduleProjectRowResponse"/>
+ </operation>
+ <operation name="getUsers">
+  <documentation>get all active users</documentation>
+  <input message="tns:getUsers"/>
+  <output message="tns:getUsersResponse"/>
+ </operation>
+ <operation name="getUserId">
+  <documentation>Service definition of function mta__getUserId</documentation>
+  <input message="tns:getUserIdRequest"/>
+  <output message="tns:getUserIdResponse"/>
+ </operation>
+ <operation name="getGroups">
+  <documentation>get all groups</documentation>
+  <input message="tns:getGroups"/>
+  <output message="tns:getGroupsResponse"/>
+ </operation>
+ <operation name="getGroupMembers">
+  <documentation>get all groups</documentation>
+  <input message="tns:getGroupMembers"/>
+  <output message="tns:getGroupMembersResponse"/>
+ </operation>
+ <operation name="getCustomers">
+  <documentation>get customers</documentation>
+  <input message="tns:getCustomers"/>
+  <output message="tns:getCustomersResponse"/>
+ </operation>
+ <operation name="getUserCustomers">
+  <documentation>Service definition of function mta__getUserCustomers</documentation>
+  <input message="tns:getUserCustomers"/>
+  <output message="tns:getUserCustomersResponse"/>
+ </operation>
+ <operation name="getProjects">
+  <documentation>Service definition of function mta__getProjects</documentation>
+  <input message="tns:getProjects"/>
+  <output message="tns:getProjectsResponse"/>
+ </operation>
+ <operation name="getProjects2">
+  <documentation>Service definition of function mta__getProjects2</documentation>
+  <input message="tns:getProjects2"/>
+  <output message="tns:getProjects2Response"/>
+ </operation>
+ <operation name="getUserProjects">
+  <documentation>Service definition of function mta__getUserProjects</documentation>
+  <input message="tns:getUserProjects"/>
+  <output message="tns:getUserProjectsResponse"/>
+ </operation>
+ <operation name="addCustomer">
+  <documentation>add customer</documentation>
+  <input message="tns:addCustomer"/>
+  <output message="tns:addCustomerResponse"/>
+ </operation>
+ <operation name="addCustomerContact">
+  <documentation>add a contact to a customer</documentation>
+  <input message="tns:addCustomerContact"/>
+  <output message="tns:addCustomerContactResponse"/>
+ </operation>
+ <operation name="getCustomerContacts">
+  <documentation>get all contacts for customer</documentation>
+  <input message="tns:getCustomerContacts"/>
+  <output message="tns:getCustomerContactResponse"/>
+ </operation>
+ <operation name="addPhase">
+  <documentation>Add/update phase. If PhaseId is null a new phase is created.</documentation>
+  <input message="tns:addPhase"/>
+  <output message="tns:addPhaseResponse"/>
+ </operation>
+ <operation name="getPhases">
+  <documentation>Service definition of function mta__getPhases</documentation>
+  <input message="tns:getPhases"/>
+  <output message="tns:getPhasesResponse"/>
+ </operation>
+ <operation name="addProject">
+  <documentation>Add/update project. If ProjectId is null a new project is created.</documentation>
+  <input message="tns:addProject"/>
+  <output message="tns:addProjectResponse"/>
+ </operation>
+ <operation name="addProject2">
+  <documentation>Service definition of function mta__addProject2</documentation>
+  <input message="tns:addProject2"/>
+  <output message="tns:addProject2Response"/>
+ </operation>
+ <operation name="addAssignment">
+  <documentation>Add/update assignment. If ProjectId is null a new project is created.</documentation>
+  <input message="tns:addAssignment"/>
+  <output message="tns:addAssignmentResponse"/>
+ </operation>
+ <operation name="addProjectPlanActivity">
+  <documentation>Add/update projectactivity.</documentation>
+  <input message="tns:addProjectPlanActivity"/>
+  <output message="tns:addProjectPlanActivityResponse"/>
+ </operation>
+ <operation name="getProjectPlanActivity">
+  <documentation>Get projectactivity.</documentation>
+  <input message="tns:getProjectPlanActivity"/>
+  <output message="tns:getProjectPlanActivityResponse"/>
+ </operation>
+ <operation name="deleteProjectPlanActivity">
+  <documentation>Delete projectactivity.</documentation>
+  <input message="tns:deleteProjectPlanActivity"/>
+  <output message="tns:deleteProjectPlanActivityResponse"/>
+ </operation>
+ <operation name="addProjectPlanActivityUser">
+  <documentation>Add/update projectactivity plan for user.</documentation>
+  <input message="tns:addProjectPlanActivityUser"/>
+  <output message="tns:addProjectPlanActivityUserResponse"/>
+ </operation>
+ <operation name="deleteProjectPlanActivityUser">
+  <documentation>Delete projectactivity plan for user.</documentation>
+  <input message="tns:deleteProjectPlanActivityUser"/>
+  <output message="tns:deleteProjectPlanActivityUserResponse"/>
+ </operation>
+ <operation name="getProjectPlanActivityUser">
+  <documentation>Get projectactivity data.</documentation>
+  <input message="tns:getProjectPlanActivityUser"/>
+  <output message="tns:getProjectPlanActivityUserResponse"/>
+ </operation>
+ <operation name="addProjectPlanActivity2">
+  <documentation>Add/update planned task; new method.</documentation>
+  <input message="tns:addProjectPlanActivity2"/>
+  <output message="tns:addProjectPlanActivity2Response"/>
+ </operation>
+ <operation name="getCounterValue">
+  <documentation>Service definition of function mta__getCounterValue</documentation>
+  <input message="tns:getCounterValue"/>
+  <output message="tns:getCounterValueResponse"/>
+ </operation>
+ <operation name="setCounterValue">
+  <documentation>Service definition of function mta__setCounterValue</documentation>
+  <input message="tns:setCounterValue"/>
+  <output message="tns:setCounterValueResponse"/>
+ </operation>
+ <operation name="getMonthView">
+  <documentation>Service definition of function mta__getMonthView</documentation>
+  <input message="tns:getMonthView"/>
+  <output message="tns:getMonthViewResponse"/>
+ </operation>
+ <operation name="getDayView">
+  <documentation>Service definition of function mta__getDayView</documentation>
+  <input message="tns:getDayView"/>
+  <output message="tns:getDayViewResponse"/>
+ </operation>
+ <operation name="getDayView2">
+  <documentation>Service definition of function mta__getDayView2</documentation>
+  <input message="tns:getDayView2"/>
+  <output message="tns:getDayView2Response"/>
+ </operation>
+ <operation name="getPeriodView">
+  <documentation>Service definition of function mta__getPeriodView</documentation>
+  <input message="tns:getPeriodView"/>
+  <output message="tns:getPeriodViewResponse"/>
+ </operation>
+ <operation name="addTimeReport">
+  <documentation>Service definition of function mta__addTimeReport</documentation>
+  <input message="tns:addTimeReport"/>
+  <output message="tns:addTimeReportResponse"/>
+ </operation>
+ <operation name="addExpense">
+  <documentation>Service definition of function mta__addExpense</documentation>
+  <input message="tns:addExpense"/>
+  <output message="tns:addExpenseResponse"/>
+ </operation>
+ <operation name="deleteExpense">
+  <documentation>Service definition of function mta__deleteExpense</documentation>
+  <input message="tns:deleteExpense"/>
+  <output message="tns:deleteExpenseResponse"/>
+ </operation>
+ <operation name="updateTimeReport">
+  <documentation>Service definition of function mta__updateTimeReport</documentation>
+  <input message="tns:updateTimeReport"/>
+  <output message="tns:updateTimeReportResponse"/>
+ </operation>
+ <operation name="deleteTimeReport">
+  <documentation>Service definition of function mta__deleteTimeReport</documentation>
+  <input message="tns:deleteTimeReport"/>
+  <output message="tns:deleteTimeReportResponse"/>
+ </operation>
+ <operation name="lockMonth">
+  <documentation>Service definition of function mta__lockMonth</documentation>
+  <input message="tns:lockMonth"/>
+  <output message="tns:lockMonthResponse"/>
+ </operation>
+ <operation name="getVehicles">
+  <documentation>Service definition of function mta__getVehicles</documentation>
+  <input message="tns:getVehicles"/>
+  <output message="tns:getVehiclesResponse"/>
+ </operation>
+ <operation name="getExpenseTypes">
+  <documentation>Service definition of function mta__getExpenseTypes</documentation>
+  <input message="tns:getExpenseTypes"/>
+  <output message="tns:getExpenseTypesResponse"/>
+ </operation>
+ <operation name="getOptionValue">
+  <documentation>Service definition of function mta__getOptionValue</documentation>
+  <input message="tns:getOptionValue"/>
+  <output message="tns:getOptionValueResponse"/>
+ </operation>
+ <operation name="setScheduleOnDay">
+  <documentation>Service definition of function mta__setScheduleOnDay</documentation>
+  <input message="tns:setScheduleOnDay"/>
+  <output message="tns:setScheduleOnDayResponse"/>
+ </operation>
+ <operation name="getScheduleUser">
+  <documentation>Service definition of function mta__getScheduleUser</documentation>
+  <input message="tns:getScheduleUser"/>
+  <output message="tns:getScheduleUserResponse"/>
+ </operation>
+ <operation name="replaceAttendence">
+  <documentation>Service definition of function mta__replaceAttendence</documentation>
+  <input message="tns:replaceAttendence"/>
+  <output message="tns:replaceAttendenceResponse"/>
+ </operation>
+ <operation name="getPriceLists">
+  <documentation>Service definition of function mta__getPriceLists</documentation>
+  <input message="tns:getPriceLists"/>
+  <output message="tns:getPriceListsResponse"/>
+ </operation>
+ <operation name="getProjectPriceList">
+  <documentation>Service definition of function mta__getProjectPriceList</documentation>
+  <input message="tns:getProjectPriceList"/>
+  <output message="tns:getProjectPriceListResponse"/>
+ </operation>
+ <operation name="updateProjectPriceList">
+  <documentation>Service definition of function mta__updateProjectPriceList</documentation>
+  <input message="tns:updateProjectPriceList"/>
+  <output message="tns:updateProjectPriceListResponse"/>
+ </operation>
+ <operation name="setSingleProjectPrice">
+  <documentation>Service definition of function mta__setSingleProjectPrice</documentation>
+  <input message="tns:setSingleProjectPrice"/>
+  <output message="tns:setSingleProjectPriceResponse"/>
+ </operation>
+ <operation name="replaceProjectPriceList">
+  <documentation>Service definition of function mta__replaceProjectPriceList</documentation>
+  <input message="tns:replaceProjectPriceList"/>
+  <output message="tns:replaceProjectPriceListResponse"/>
+ </operation>
+ <operation name="changeCustomerNr">
+  <documentation>Service definition of function mta__changeCustomerNr</documentation>
+  <input message="tns:changeCustomerNr"/>
+  <output message="tns:changeCustomerNrResponse"/>
+ </operation>
+ <operation name="addCurrency">
+  <documentation>Service definition of function mta__addCurrency</documentation>
+  <input message="tns:addCurrency"/>
+  <output message="tns:addCurrencyResponse"/>
+ </operation>
+ <operation name="getCurrency">
+  <documentation>Service definition of function mta__getCurrency</documentation>
+  <input message="tns:getCurrency"/>
+  <output message="tns:getCurrencyResponse"/>
+ </operation>
+ <operation name="deleteCurrency">
+  <documentation>Service definition of function mta__deleteCurrency</documentation>
+  <input message="tns:deleteCurrency"/>
+  <output message="tns:deleteCurrencyResponse"/>
+ </operation>
+ <operation name="addJobArticle">
+  <documentation>Service definition of function mta__addJobArticle</documentation>
+  <input message="tns:addJobArticle"/>
+  <output message="tns:addJobArticleResponse"/>
+ </operation>
+ <operation name="getJobArticle">
+  <documentation>Service definition of function mta__getJobArticle</documentation>
+  <input message="tns:getJobArticle"/>
+  <output message="tns:getJobArticleResponse"/>
+ </operation>
+ <operation name="deleteJobArticle">
+  <documentation>Service definition of function mta__deleteJobArticle</documentation>
+  <input message="tns:deleteJobArticle"/>
+  <output message="tns:deleteJobArticleResponse"/>
+ </operation>
+ <operation name="addItemArticle">
+  <documentation>Service definition of function mta__addItemArticle</documentation>
+  <input message="tns:addItemArticle"/>
+  <output message="tns:addItemArticleResponse"/>
+ </operation>
+ <operation name="deleteItemArticle">
+  <documentation>Service definition of function mta__deleteItemArticle</documentation>
+  <input message="tns:deleteItemArticle"/>
+  <output message="tns:deleteItemArticleResponse"/>
+ </operation>
+ <operation name="getServerCodes">
+  <documentation>Service definition of function mta__getServerCodes</documentation>
+  <input message="tns:getServerCodes"/>
+  <output message="tns:getServerCodesResponse"/>
+ </operation>
+ <operation name="getExternalInstance">
+  <documentation>Service definition of function mta__getExternalInstance</documentation>
+  <input message="tns:getExternalInstance"/>
+  <output message="tns:getExternalInstanceResponse"/>
+ </operation>
+ <operation name="addExternalInstance">
+  <documentation>Service definition of function mta__addExternalInstance</documentation>
+  <input message="tns:addExternalInstance"/>
+  <output message="tns:addExternalInstanceResponse"/>
+ </operation>
+ <operation name="deleteExternalInstance">
+  <documentation>Service definition of function mta__deleteExternalInstance</documentation>
+  <input message="tns:deleteExternalInstance"/>
+  <output message="tns:deleteExternalInstanceResponse"/>
+ </operation>
+ <operation name="getExternalActivityMapping">
+  <documentation>Service definition of function mta__getExternalActivityMapping</documentation>
+  <input message="tns:getExternalActivityMapping"/>
+  <output message="tns:getExternalActivityMappingResponse"/>
+ </operation>
+ <operation name="addExternalActivityMapping">
+  <documentation>Service definition of function mta__addExternalActivityMapping</documentation>
+  <input message="tns:addExternalActivityMapping"/>
+  <output message="tns:addExternalActivityMappingResponse"/>
+ </operation>
+ <operation name="deleteExternalActivityMapping">
+  <documentation>Service definition of function mta__deleteExternalActivityMapping</documentation>
+  <input message="tns:deleteExternalActivityMapping"/>
+  <output message="tns:deleteExternalActivityMappingResponse"/>
+ </operation>
+ <operation name="getExternalProjectIds">
+  <documentation>Service definition of function mta__getExternalProjectIds</documentation>
+  <input message="tns:getExternalProjectIds"/>
+  <output message="tns:getExternalProjectIdsResponse"/>
+ </operation>
+ <operation name="getExternalProject">
+  <documentation>Service definition of function mta__getExternalProject</documentation>
+  <input message="tns:getExternalProject"/>
+  <output message="tns:getExternalProjectResponse"/>
+ </operation>
+ <operation name="addExternalProject">
+  <documentation>Service definition of function mta__addExternalProject</documentation>
+  <input message="tns:addExternalProject"/>
+  <output message="tns:addExternalProjectResponse"/>
+ </operation>
+ <operation name="getExternalProjectRegistrations">
+  <documentation>Service definition of function mta__getExternalProjectRegistrations</documentation>
+  <input message="tns:getExternalProjectRegistrations"/>
+  <output message="tns:getExternalProjectRegistrationsResponse"/>
+ </operation>
+ <operation name="addExternalProjectRegistration">
+  <documentation>Service definition of function mta__addExternalProjectRegistration</documentation>
+  <input message="tns:addExternalProjectRegistration"/>
+  <output message="tns:addExternalProjectRegistrationResponse"/>
+ </operation>
+ <operation name="markExternalProjectRegistration">
+  <documentation>Service definition of function mta__markExternalProjectRegistration</documentation>
+  <input message="tns:markExternalProjectRegistration"/>
+  <output message="tns:markExternalProjectRegistrationResponse"/>
+ </operation>
+ <operation name="setFlexIn">
+  <documentation>Service definition of function mta__setFlexIn</documentation>
+  <input message="tns:setFlexIn"/>
+  <output message="tns:setFlexInResponse"/>
+ </operation>
+ <operation name="getCostReportAllActive">
+  <documentation>Service definition of function mta__getCostReportAllActive</documentation>
+  <input message="tns:getCostReportAllActive"/>
+  <output message="tns:getCostReportAllActiveResponse"/>
+ </operation>
+ <operation name="getPrognosisReportAllActive">
+  <documentation>Service definition of function mta__getPrognosisReportAllActive</documentation>
+  <input message="tns:getPrognosisReportAllActive"/>
+  <output message="tns:getPrognosisReportAllActiveResponse"/>
+ </operation>
+ <operation name="getAttributeValueList">
+  <documentation>Service definition of function mta__getAttributeValueList</documentation>
+  <input message="tns:getAttributeValueList"/>
+  <output message="tns:getAttributeValueListResponse"/>
+ </operation>
+ <operation name="getSelectValueList">
+  <documentation>Service definition of function mta__getSelectValueList</documentation>
+  <input message="tns:getSelectValueList"/>
+  <output message="tns:getSelectValueListResponse"/>
+ </operation>
+</portType>
+
+<binding name="MilltimeAPI" type="tns:API">
+ <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ <operation name="login">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="logout">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="changeUser">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="whoAmI">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getInstances">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getActivitys">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getUserActivitys">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getActivitysInProject">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getActivityGroups">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getActivityGroupActivities">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getItemArticles">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getPaymentScheduleProjectRows">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addPaymentScheduleProjectRow">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deletePaymentScheduleProjectRow">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getUsers">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getUserId">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getGroups">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getGroupMembers">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getCustomers">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getUserCustomers">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjects">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjects2">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getUserProjects">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addCustomer">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addCustomerContact">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getCustomerContacts">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addPhase">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getPhases">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addProject">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addProject2">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addAssignment">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addProjectPlanActivity">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjectPlanActivity">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteProjectPlanActivity">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addProjectPlanActivityUser">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteProjectPlanActivityUser">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjectPlanActivityUser">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addProjectPlanActivity2">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getCounterValue">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="setCounterValue">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getMonthView">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getDayView">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getDayView2">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getPeriodView">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addTimeReport">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addExpense">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteExpense">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="updateTimeReport">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteTimeReport">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="lockMonth">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getVehicles">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExpenseTypes">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getOptionValue">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="setScheduleOnDay">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getScheduleUser">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="replaceAttendence">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getPriceLists">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjectPriceList">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="updateProjectPriceList">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="setSingleProjectPrice">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="replaceProjectPriceList">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="changeCustomerNr">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addCurrency">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getCurrency">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteCurrency">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addJobArticle">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getJobArticle">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteJobArticle">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addItemArticle">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteItemArticle">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getServerCodes">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExternalInstance">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addExternalInstance">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteExternalInstance">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExternalActivityMapping">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addExternalActivityMapping">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="deleteExternalActivityMapping">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExternalProjectIds">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExternalProject">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addExternalProject">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExternalProjectRegistrations">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="addExternalProjectRegistration">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="markExternalProjectRegistration">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="setFlexIn">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getCostReportAllActive">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getPrognosisReportAllActive">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getAttributeValueList">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getSelectValueList">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+</binding>
+
+<service name="MilltimeAPI">
+ <documentation>MillTime API</documentation>
+ <port name="MilltimeAPI" binding="tns:MilltimeAPI">
+  <SOAP:address location="http://127.0.0.1/milltime/cgi/api_service.cgi"/>
+ </port>
+</service>
+
+</definitions>
